@@ -6,7 +6,8 @@
 Install-Module PnP.PowerShell -Scope CurrentUser
 ```
 
-## Crear App Registration
+## Crear App Registration 
+[Register an Entra ID Application to use with PnP PowerShell](https://pnp.github.io/powershell/articles/registerapplication.html)
 1. Ir a EntraID.
 2. Ir a App Registrations.
 3. Hacer clic en New registration.
