@@ -42,6 +42,14 @@ Connect-PnPOnline `
     -Url "https://zg7wc.sharepoint.com/sites/CursoSharepointSPFx" `
     -Interactive
 ```
+## Ver las carpetas que hay en Documents
+```PowerShell
+Get-PnPFolderItem `
+    -FolderSiteRelativeUrl "Shared Documents" `
+    -ItemType Folder |
+Select-Object Name
+```
+
 ## Crear y eliminar listas
 
 ## Crear y eliminar bibliotecas
