@@ -1,4 +1,4 @@
-# Powershell. Cmdlets básicos de Sharepoint
+# Powershell PnP. Cmdlets básicos de Sharepoint
 
 ## Instalar PnP PowerShell
 
