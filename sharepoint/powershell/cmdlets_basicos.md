@@ -50,7 +50,200 @@ Get-PnPFolderItem `
 Select-Object Name
 ```
 
-## Crear y eliminar listas
+## Listas
+
+### Ver listas
+
+##### Listar todas las listas del sitio
+```PowerShell
+Get-PnPList
+```
+#### Ver las listas bajo /Lists
+```PowerShell
+Get-PnPList | Where-Object {`
+    $_.RootFolder.ServerRelativeUrl -match "/Lists/"`
+} | Select-Object Title, RootFolder
+```
+#### Obtener una lista concreta
+```PowerShell
+Get-PnPList -Identity "Countries"
+```
+#### Ver propiedades de una lista
+```PowerShell
+Get-PnPList -Identity "Countries" | Format-List *
+```
+### Crear listas
+#### Crear una lista personalizada
+```PowerShell
+New-PnPList `
+-Title "Clientes" `
+-Template GenericList
+```
+#### Crear una biblioteca de documentos
+```PowerShell
+New-PnPList `
+-Title "Contratos" `
+-Template DocumentLibrary
+```
+
+Plantillas habituales:
+
+Plantilla	Tipo
+GenericList	Lista personalizada
+DocumentLibrary	Biblioteca documental
+Tasks	Tareas
+Contacts	Contactos
+Events	Calendario
+Announcements	Anuncios
+
+Ver plantillas disponibles:
+
+PowerShell
+Get-PnPWebTemplates
+
+
+Eliminar listas
+PowerShell
+Remove-PnPList `
+-Identity "Clientes" `
+-Force
+Gestionar columnas
+Ver columnas
+PowerShell
+Get-PnPField -List "Clientes"
+Crear columna de texto
+PowerShell
+Add-PnPField `
+-List "Clientes" `
+-DisplayName "Telefono" `
+-InternalName "Telefono" `
+-Type Text
+Crear columna numérica
+PowerShell
+Add-PnPField `
+-List "Clientes" `
+-DisplayName "Importe" `
+-InternalName "Importe" `
+-Type Number
+Crear columna fecha
+PowerShell
+Add-PnPField `
+-List "Clientes" `
+-DisplayName "FechaAlta" `
+-InternalName "FechaAlta" `
+-Type DateTime
+Eliminar columna
+PowerShell
+Remove-PnPField `
+-List "Clientes" `
+-Identity "Telefono"
+Gestionar elementos
+Ver elementos
+PowerShell
+Get-PnPListItem `
+-List "Clientes"
+Obtener un elemento concreto
+PowerShell
+Get-PnPListItem `
+-List "Clientes" `
+-Id 1
+Crear elemento
+PowerShell
+Add-PnPListItem `
+-List "Clientes" `
+-Values @{
+Title="Contoso"
+Telefono="600123456"
+}
+Modificar elemento
+PowerShell
+Set-PnPListItem `
+-List "Clientes" `
+-Identity 1 `
+-Values @{
+Telefono="699999999"
+}
+Eliminar elemento
+PowerShell
+Remove-PnPListItem `
+-List "Clientes" `
+-Identity 1 `
+-Force
+Gestionar vistas
+Ver vistas
+PowerShell
+Get-PnPView `
+-List "Clientes"
+Crear vista
+PowerShell
+Add-PnPView `
+-List "Clientes" `
+-Title "Vista Comercial"
+Establecer vista predeterminada
+PowerShell
+Set-PnPView `
+-List "Clientes" `
+-Identity "Vista Comercial" `
+-Values @{DefaultView=$true}
+Gestionar permisos
+Romper herencia
+PowerShell
+Set-PnPList `
+-Identity "Clientes" `
+-BreakRoleInheritance
+Ver permisos
+PowerShell
+Get-PnPProperty `
+-ClientObject (Get-PnPList "Clientes") `
+-Property RoleAssignments
+ 
+Gestionar carpetas en listas
+Crear carpeta
+PowerShell
+Add-PnPFolder `
+-Name "2026" `
+-Folder "Clientes"
+Ver carpetas
+PowerShell
+Get-PnPFolderItem `
+-FolderSiteRelativeUrl "Clientes" `
+-ItemType Folder
+Configuración de la lista
+Habilitar versiones
+PowerShell
+Set-PnPList `
+-Identity "Clientes" `
+-EnableVersioning $true
+Deshabilitar versiones
+PowerShell
+Set-PnPList `
+-Identity "Clientes" `
+-EnableVersioning $false
+Ocultar lista
+PowerShell
+Set-PnPList `
+-Identity "Clientes" `
+-Hidden $true
+Mostrar lista
+PowerShell
+Set-PnPList `
+-Identity "Clientes" `
+-Hidden $false
+Exportación masiva
+Obtener todos los elementos
+PowerShell
+Get-PnPListItem `
+-List "Clientes" `
+-PageSize 1000
+Exportar a CSV
+PowerShell
+Get-PnPListItem -List "Clientes" |
+ForEach-Object {
+[PSCustomObject]@{
+ID = $_["ID"]
+Nombre = $_["Title"]
+}
+} | Export-Csv clientes.csv -NoTypeInformation
 
 ## Crear y eliminar bibliotecas
 
