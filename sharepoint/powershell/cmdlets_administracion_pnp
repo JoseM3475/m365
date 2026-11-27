@@ -1,0 +1,62 @@
+# Cmdlets Administracion Sharepoint con PnP
+
+Tener en cuenta que la App Registration en Entra ID tiene que estar configurada para dar permiso al usuario.
+
+```PowerShell
+
+```
+ 
+## Conexion
+  
+```PowerShell
+Install-Module Microsoft.Online.SharePoint.PowerShell -Force
+Install-Module PnP.PowerShell -Scope CurrentUser
+```
+```PowerShell
+$env:ENTRAID_APP_ID="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+```
+
+```PowerShell
+Connect-SPOService `
+    -Url https://zg7wc-admin.sharepoint.com
+```
+# Sitios
+## Obtener sitios del tenant con PnP
+
+### Conéctate al centro de administración:
+
+```PowerShell
+Connect-PnPOnline `
+-Url "https://zg7wc-admin.sharepoint.com" `
+-Interactive
+```
+Después:
+
+```PowerShell
+Get-PnPTenantSite
+```
+Mostrar solo URL y título:
+
+```PowerShell
+Get-PnPTenantSite | Select Title, Url
+```
+### Filtrar sitios de comunicación
+```PowerShell
+Get-PnPTenantSite |
+Select Title, Url, Template |
+Where-Object {$_.Template -eq "SITEPAGEPUBLISHING#0"}
+```
+### Buscar un sitio concreto
+```PowerShell
+Get-PnPTenantSite | Where-Object {
+$_.Url -like "*Dev*"
+}
+```
+  
+### Exportar todos los sitios a CSV
+```PowerShell
+Get-PnPTenantSite |
+Select Title, Url, Template, Owner |
+Export-Csv "C:\aspfx\Sites.csv" -NoTypeInformation
+```
+  
